@@ -5,6 +5,10 @@ import routes from './routes/postRoutes.js';
 import morgan from 'morgan';
 import connectDB from './config/db.js';
 import dotenv from 'dotenv';
+import notFound from './middlewares/notFound.js';
+import errosHandle from './middlewares/errosHandle.js';
+import e from 'express';
+
 dotenv.config();
 
 const app = express();
@@ -18,13 +22,8 @@ app.use(morgan('dev'));
 
 app.use('/api', routes);
 
-app.use((req, res) => {
-  res.status(404).json({ message: 'Ruta no encontrada' });
-});
-
-app.use((err, req, res, next) => {
-  res.status(err.status || 500).json({ message: err.message || 'Internal Server Error' });
-});
+app.use(notFound);
+app.use(errosHandle);
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
