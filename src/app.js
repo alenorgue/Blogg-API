@@ -7,7 +7,8 @@ import connectDB from './config/db.js';
 import dotenv from 'dotenv';
 import notFound from './middlewares/notFound.js';
 import errosHandle from './middlewares/errosHandle.js';
-import e from 'express';
+import validatePost from './middlewares/validatePost.js';
+
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use('/api', routes);
 
 app.use(notFound);
 app.use(errosHandle);
+app.use(validatePost);
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);

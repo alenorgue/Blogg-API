@@ -3,7 +3,7 @@ import Post from "../models/postModel.js";
 //Create a new post
 const createPost = async (req, res) => {
   try {
-    const post = new postModel(req.body);
+    const post = new Post(req.body);
     await post.save();
     res.status(201).json(post);
   } catch (error) {
@@ -30,7 +30,7 @@ const updatePost = async (req, res) => {
 //Get all posts
 const getAllPosts = async (req, res) => {
   try {
-    const posts = await postModel.find();
+    const posts = await Post.find();
     res.status(200).json(posts);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -40,7 +40,7 @@ const getAllPosts = async (req, res) => {
 //Get a post by ID
 const getPostById = async (req, res) => {
   try {
-    const post = await postModel.findById(req.params.id);
+    const post = await Post.findById(req.params.id);
     if (!post) return res.status(404).json({ message: 'Post not found' });
     res.status(200).json(post);
   } catch (error) {
@@ -55,7 +55,7 @@ const getPostsByFilter = async (req, res) => {
     const filter = {};
     if (category) filter.category = category;
     if (tags) filter.tags = { $in: tags.split(',') };
-    const posts = await postModel.find(filter);
+    const posts = await Post.find(filter);
     res.status(200).json(posts);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -65,7 +65,7 @@ const getPostsByFilter = async (req, res) => {
 //Delete a post
 const deletePost = async (req, res) => {
   try {
-    const post = await postModel.findByIdAndDelete(req.params.id);
+    const post = await Post.findByIdAndDelete(req.params.id);
     if (!post) return res.status(404).json({ message: 'Post not found' });
     res.status(200).json({ message: 'Post deleted successfully' });
   } catch (error) {
